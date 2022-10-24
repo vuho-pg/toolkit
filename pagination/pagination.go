@@ -26,6 +26,10 @@ func (p *Pagination) NoOrder(noOrder bool) *Pagination {
 	return p
 }
 
+func (p *Pagination) Offset() int {
+	return (p.Page - 1) * p.Limit
+}
+
 func (p *Pagination) correct() {
 	if p.Page < 1 {
 		p.Page = DefaultPage
@@ -36,6 +40,7 @@ func (p *Pagination) correct() {
 }
 
 func (p *Pagination) init() {
+	p.correct()
 	p.Orders = splitOrder(p.Sort)
 	p.ok = true
 }
