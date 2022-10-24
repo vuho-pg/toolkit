@@ -12,11 +12,13 @@ const (
 	OrderDesc OrderType = "DESC"
 )
 
+// Order : use for sort result
 type Order struct {
 	Field string
 	Order OrderType
 }
 
+// GormString : return the sql sorting string like 'Field ASC, Field DESC'
 func (o Order) GormString() string {
 	return fmt.Sprintf("%v %v", o.Field, o.Order)
 }
