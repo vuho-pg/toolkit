@@ -49,5 +49,5 @@ func TestPagination_SetTotalRecord(t *testing.T) {
 	if totalRecord%int64(p.Limit) != 0 {
 		totalPage++
 	}
-	assert.Equal(t, p.TotalPage, totalPage+1)
+	assert.Equal(t, p.TotalPage, totalPage)
 }
