@@ -5,6 +5,7 @@ import (
 	"strings"
 )
 
+// Type : error type.
 type Type string
 
 const (
@@ -14,6 +15,7 @@ const (
 
 const withErrorFormat = "[%v] %v"
 
+// Error : error wrapper.
 type Error struct {
 	withErrType bool
 	t           Type
@@ -21,11 +23,13 @@ type Error struct {
 	message     string
 }
 
+// WithType : make the error message include error Type.
 func (e *Error) WithType() error {
 	e.withErrType = true
 	return e
 }
 
+// WithType : if type of e is Error, call e.WithType().
 func WithType(e error) error {
 	base, ok := e.(*Error)
 	if !ok {
@@ -61,6 +65,7 @@ func (e *Error) Error() string {
 	return e.message
 }
 
+// Multiple : wrap multiple error, concat messages with "\n"
 func Multiple(t Type, errs ...error) error {
 	return &Error{
 		t:   t,
@@ -68,6 +73,7 @@ func Multiple(t Type, errs ...error) error {
 	}
 }
 
+// New : create new Error
 func New(format string, args ...interface{}) error {
 	return &Error{
 		t:       InternalError,
@@ -75,6 +81,7 @@ func New(format string, args ...interface{}) error {
 	}
 }
 
+// BadRequest : create new Error with BadRequest Type
 func BadRequest(format string, args ...interface{}) error {
 	return &Error{
 		t:       BadRequestError,
@@ -82,6 +89,7 @@ func BadRequest(format string, args ...interface{}) error {
 	}
 }
 
+// Wrap : wrap an error with Type
 func Wrap(t Type, err ...error) error {
 	return &Error{
 		withErrType: false,

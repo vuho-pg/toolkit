@@ -5,6 +5,7 @@ const (
 	DefaultPage  = 1
 )
 
+// Pagination : pagination utility.
 type Pagination struct {
 	ok          bool
 	noLimit     bool
@@ -17,15 +18,19 @@ type Pagination struct {
 	Orders      []Order `json:"-"`
 }
 
+// NoLimit : set to true if you want query has no limit.
 func (p *Pagination) NoLimit(noLimit bool) *Pagination {
 	p.noLimit = noLimit
 	return p
 }
+
+// NoOrder : set to true if you don't want your result return in sorted order.
 func (p *Pagination) NoOrder(noOrder bool) *Pagination {
 	p.noOrder = noOrder
 	return p
 }
 
+// Offset : return the offset value
 func (p *Pagination) Offset() int {
 	return (p.Page - 1) * p.Limit
 }
@@ -45,6 +50,7 @@ func (p *Pagination) init() {
 	p.ok = true
 }
 
+// SetTotalRecord : use this will recalculate the TotalPage
 func (p *Pagination) SetTotalRecord(total int64) {
 	p.TotalRecord = total
 	p.TotalPage = total / int64(p.Limit)
