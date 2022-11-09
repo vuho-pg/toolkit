@@ -50,8 +50,16 @@ func (p *Pagination) init() {
 	p.ok = true
 }
 
+func (p *Pagination) checkOk() {
+	if p.ok {
+		return
+	}
+	p.init()
+}
+
 // SetTotalRecord : use this will recalculate the TotalPage
 func (p *Pagination) SetTotalRecord(total int64) {
+	p.checkOk()
 	p.TotalRecord = total
 	p.TotalPage = total / int64(p.Limit)
 	if total%int64(p.Limit) != 0 {
