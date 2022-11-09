@@ -2,6 +2,7 @@ package errors
 
 import (
 	"fmt"
+	"net/http"
 	"strings"
 )
 
@@ -18,9 +19,20 @@ const withErrorFormat = "[%v] %v"
 // Error : error wrapper.
 type Error struct {
 	withErrType bool
-	t           Type
+	Type        Type
 	err         []error
 	message     string
+}
+
+func (e *Error) StatusCode() int {
+	switch e.Type {
+	case InternalError:
+		return http.StatusInternalServerError
+	case BadRequestError:
+		return http.StatusBadRequest
+	default:
+		return http.StatusInternalServerError
+	}
 }
 
 // WithType : make the error message include error Type.
@@ -55,12 +67,12 @@ func (e *Error) joinErrMessage() string {
 func (e *Error) Error() string {
 	if e.message == "" {
 		if e.withErrType {
-			return fmt.Sprintf(withErrorFormat, e.t, e.joinErrMessage())
+			return fmt.Sprintf(withErrorFormat, e.Type, e.joinErrMessage())
 		}
 		return e.joinErrMessage()
 	}
 	if e.withErrType {
-		return fmt.Sprintf(withErrorFormat, e.t, e.message)
+		return fmt.Sprintf(withErrorFormat, e.Type, e.message)
 	}
 	return e.message
 }
@@ -68,15 +80,15 @@ func (e *Error) Error() string {
 // Multiple : wrap multiple error, concat messages with "\n"
 func Multiple(t Type, errs ...error) error {
 	return &Error{
-		t:   t,
-		err: errs,
+		Type: t,
+		err:  errs,
 	}
 }
 
 // New : create new Error
 func New(format string, args ...interface{}) error {
 	return &Error{
-		t:       InternalError,
+		Type:    InternalError,
 		message: fmt.Sprintf(format, args...),
 	}
 }
@@ -84,7 +96,7 @@ func New(format string, args ...interface{}) error {
 // BadRequest : create new Error with BadRequest Type
 func BadRequest(format string, args ...interface{}) error {
 	return &Error{
-		t:       BadRequestError,
+		Type:    BadRequestError,
 		message: fmt.Sprintf(format, args...),
 	}
 }
@@ -93,7 +105,7 @@ func BadRequest(format string, args ...interface{}) error {
 func Wrap(t Type, err ...error) error {
 	return &Error{
 		withErrType: false,
-		t:           t,
+		Type:        t,
 		err:         err,
 	}
 }

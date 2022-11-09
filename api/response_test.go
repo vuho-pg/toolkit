@@ -29,7 +29,7 @@ func TestBadRequest(t *testing.T) {
 	req := BadRequest("bad request")
 	reqJson, err := json.Marshal(req)
 	assert.Nil(t, err)
-	expect := Response{
+	expect := DefaultResponse{
 		Meta: Metadata{
 			Code:    http.StatusBadRequest,
 			Message: "bad request",
@@ -50,7 +50,7 @@ func TestSuccessPagination(t *testing.T) {
 		"hello world")
 	reqJson, err := json.Marshal(req)
 	assert.Nil(t, err)
-	expect := Response{
+	expect := DefaultResponse{
 		Meta: Metadata{
 			Code:    http.StatusOK,
 			Message: "hello world",
@@ -72,7 +72,7 @@ func TestSuccess(t *testing.T) {
 	req := Success("example data", "hello world")
 	reqJson, err := json.Marshal(req)
 	assert.Nil(t, err)
-	expect := Response{
+	expect := DefaultResponse{
 		Meta: Metadata{
 			Code:    http.StatusOK,
 			Message: "hello world",
