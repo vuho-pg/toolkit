@@ -38,3 +38,10 @@ func (q Q) Contain(name string, data string) Q {
 	}
 	return q
 }
+
+func (q Q) In(name string, value interface{}) Q {
+	if !check.IsZero(value) {
+		q[fmt.Sprintf("%v IN (?)", name)] = value
+	}
+	return q
+}
