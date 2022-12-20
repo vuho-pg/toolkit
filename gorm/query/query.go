@@ -41,7 +41,7 @@ func (q Q) Contain(name string, data string) Q {
 
 func (q Q) In(name string, value interface{}) Q {
 	if !check.IsZero(value) {
-		q[fmt.Sprintf("%v IN (?)", name)] = value
+		q[fmt.Sprintf("%v IN ?", name)] = value
 	}
 	return q
 }
