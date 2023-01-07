@@ -10,11 +10,11 @@ type Pagination struct {
 	ok          bool
 	noLimit     bool
 	noOrder     bool
-	Page        int     `json:"page"`
-	TotalPage   int64   `json:"total_page"`
-	TotalRecord int64   `json:"total_record"`
-	Limit       int     `json:"limit"`
-	Sort        string  `json:"order"`
+	Page        int     `json:"page" query:"page"`
+	TotalPage   int64   `json:"total_page" query:"total_page"`
+	TotalRecord int64   `json:"total_record" query:"total_record"`
+	Limit       int     `json:"limit" query:"limit"`
+	Sort        string  `json:"order" query:"order"`
 	Orders      []Order `json:"-"`
 }
 
