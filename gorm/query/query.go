@@ -3,9 +3,17 @@ package query
 import (
 	"fmt"
 	"github.com/vuho-pg/toolkit/check"
+	"gorm.io/gorm"
 )
 
 type Q map[string]interface{}
+
+func (q Q) Apply(db *gorm.DB) *gorm.DB {
+	for k, v := range q {
+		db = db.Where(k, v)
+	}
+	return db
+}
 
 func New() Q {
 	return make(Q)
